@@ -4,15 +4,31 @@
 
 using namespace std;
 
-int map[7][7];
+int width = 4;
+
+int mangi = width * width;
+
+int minusWidth = width - 1;
+
+int map[4][4];
+
+int ans[16][4][4];
 
 int howMany = 0;
 
 unsigned int tryTime = 0;
 
-void show() {
-    for (int i = 0; i < 7; i++) {
-        for (int j = 0; j < 7; j++) {
+void save(int data[4][4]) {
+    for(int i = 0; i < width; i++) {
+        for(int k = 0; k < width; k++) {
+            ans[howMany][i][k] = data[i][k];
+        }
+    }
+}
+
+void show(int progress) {
+    for (int i = 0; i < width; i++) {
+        for (int j = 0; j < width; j++) {
             if (map[i][j] == 1) {
                 cout << " " << map[i][j] << " ";
             }
@@ -24,11 +40,12 @@ void show() {
     }
     cout << "已嘗試 " << tryTime << " 次檢查。" << endl;
     cout << "目前總共有 " << howMany << " 組符合條件。" << endl;
+    cout << progress << " / " << mangi << endl;
 }
 
 void init() {
-    for (int i = 0; i < 7; i++) {
-        for (int j = 0; j < 7; j++) {
+    for (int i = 0; i < width; i++) {
+        for (int j = 0; j < width; j++) {
             map[i][j] = 1;
         }
     }
@@ -37,19 +54,19 @@ void init() {
 void check() {
     int wrong = 0;
     int total;
-    for (int i = 0; i < 7; i++) {
-        for (int j = 0; j < 7; j++) {
+    for (int i = 0; i < width; i++) {
+        for (int j = 0; j < width; j++) {
             total = 1;
             if ((i - 1) >= 0) {
                 total = total * map[i - 1][j];
             }
-            if ((i + 1) <= 6) {
+            if ((i + 1) <= minusWidth) {
                 total = total * map[i + 1][j];
             }
             if ((j - 1) >= 0) {
                 total = total * map[i][j - 1];
             }
-            if ((j + 1) <= 6) {
+            if ((j + 1) <= minusWidth) {
                 total = total * map[i][j + 1];
             }
             if (total != map[i][j]) {
@@ -61,6 +78,7 @@ void check() {
     }
     tryTime++;
     if (!wrong) {
+        save(map);
         howMany++;
     }
 }
@@ -75,17 +93,30 @@ void comb(int N, int K) {
         init();
         for(int i = 0; i < N; ++i) {// [0..N-1] integers
             if(bitmask[i]) {
-                map[i/7][i%7] = -1;
+                map[i/width][i%width] = -1;
             }
         }
         check();
-        show();
+        show(K);
     }
     while(std::prev_permutation(bitmask.begin(), bitmask.end()));
 }
  
 int main() {
-    for(int i = 1; i <= 49; i++) {
-        comb(49, i);
+    init();
+    check();
+    show(0);
+    for(int i = 1; i <= mangi; i++) {
+        comb(mangi, i);
+    }
+    int modalId;
+    while(cin >> modalId) {
+        for(int i = 0; i < width; i++) {
+            for(int k = 0; k < width; k++) {
+                map[i][k] = ans[modalId][i][k];
+            }
+        }
+        system("clear");
+        show(mangi);
     }
 }
