@@ -115,6 +115,6 @@ int main() {
             }
         }
         system("clear");
-        show(mangi);
+        show(howMany);
     }
 }
