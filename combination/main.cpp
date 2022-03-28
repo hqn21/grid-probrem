@@ -84,22 +84,20 @@ void check() {
 }
 
 void comb(int N, int K) {
-    std::string bitmask(K, 1); // K leading 1's
-    bitmask.resize(N, 0); // N-K trailing 0's
- 
-    // print integers and permute bitmask
+    string data(K, 1); // 建立 K 大小的字串陣列，並填滿 1
+    data.resize(N, 0); // 將字串陣列調整大小為 N，並將空缺部分填滿 0
     do {
         system("clear");
         init();
-        for(int i = 0; i < N; ++i) {// [0..N-1] integers
-            if(bitmask[i]) {
+        for(int i = 0; i < N; ++i) {
+            if(data[i]) { // 如果資料為 1 (true)
                 map[i/width][i%width] = -1;
             }
         }
         check();
         show(K);
     }
-    while(std::prev_permutation(bitmask.begin(), bitmask.end()));
+    while(prev_permutation(data.begin(), data.end())); // 將字串陣列中的資料重新排序成每種可能
 }
  
 int main() {
