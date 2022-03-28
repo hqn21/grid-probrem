@@ -4,21 +4,21 @@
 
 using namespace std;
 
-int width = 4;
+int width = 7;
 
 int mangi = width * width;
 
 int minusWidth = width - 1;
 
-int map[4][4];
+int map[7][7];
 
-int ans[16][4][4];
+int ans[49][7][7];
 
 int howMany = 0;
 
 unsigned int tryTime = 0;
 
-void save(int data[4][4]) {
+void save(int data[7][7]) {
     for(int i = 0; i < width; i++) {
         for(int k = 0; k < width; k++) {
             ans[howMany][i][k] = data[i][k];
